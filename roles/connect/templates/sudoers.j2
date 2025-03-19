@@ -1,0 +1,18 @@
+{{ item }} ALL=(root) NOPASSWD: /usr/bin/virsh destroy imagemode
+{{ item }} ALL=(root) NOPASSWD: /usr/bin/virsh destroy image-mode-test
+{{ item }} ALL=(root) NOPASSWD: /usr/bin/virsh destroy podman
+{{ item }} ALL=(root) NOPASSWD: /usr/bin/virsh destroy openscap
+{% if item == 'imagemode' %}
+{{ item }} ALL=(root) NOPASSWD: /usr/bin/qemu-img convert -f qcow2 -O qcow2 -o lazy_refcounts=on /var/lib/libvirt/images/templates/image-mode.qcow2 /imagemode/image-mode.qcow2
+{{ item }} ALL=(root) NOPASSWD: /usr/bin/qemu-img convert -f qcow2 -O qcow2 -o lazy_refcounts=on /var/lib/libvirt/images/templates/image-mode-test.qcow2 /imagemode/image-mode-test.qcow2
+{{ item }} ALL=(root) NOPASSWD: /usr/bin/virsh start imagemode
+{{ item }} ALL=(root) NOPASSWD: /usr/bin/chmod 0664 /imagemode/image-mode-test.qcow2
+{% endif %}
+{% if item == 'openscap' %}
+{{ item }} ALL=(root) NOPASSWD: /usr/bin/qemu-img convert -f qcow2 -O qcow2 -o lazy_refcounts=on /var/lib/libvirt/images/templates/openscap.qcow2 /var/lib/libvirt/images/openscap.qcow2
+{{ item }} ALL=(root) NOPASSWD: /usr/bin/virsh start openscap
+{% endif %}
+{% if item == 'podman' %}
+{{ item }} ALL=(root) NOPASSWD: /usr/bin/qemu-img convert -f qcow2 -O qcow2 -o lazy_refcounts=on /var/lib/libvirt/images/templates/podman.qcow2 /var/lib/libvirt/images/podman.qcow2
+{{ item }} ALL=(root) NOPASSWD: /usr/bin/virsh start podman
+{% endif %}

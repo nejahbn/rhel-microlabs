@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Launch OpenScap VM Console
+Icon=/usr/share/icons/hicolor/64x64/apps/qemu.png
+Exec=/usr/bin/vncviewer 127.0.0.1:1
+Terminal=false
+Categories=Development;

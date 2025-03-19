@@ -1,0 +1,139 @@
+---
+
+# Copyright 2024 (c) José Ángel de Bustos Pérez 
+#   Author: José Ángel de Bustos Pérez <jadebustos@gmail.com>
+#
+# This file is part of the IdM workshop.
+#
+# IdM workshop is free software: you can redistribute it and/or modify it under the terms of 
+# the GNU General Public License v3 as published by the Free Software Foundation.
+# IdM workshop is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# See the GNU General Public License v3 for more details.
+
+# You should have received a copy of the GNU General Public License v3 along with the IdM workshop. 
+# If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
+
+- name: configurar el fichero /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "{{ item }}"
+    state: present
+  loop:
+    - "192.168.122.100 registry  registry.lab.melmac.univ"
+    - "192.168.122.202 imagemode imagemode.lab.melmac.univ"
+    - "192.168.122.120 openscap  openscap.lab.melmac.univ"
+    - "192.168.122.184 podman    podman.lab.melmac.univ"
+    - "192.168.122.203 imagemodetest imagemodetest.lab.melmac.univ"
+
+- name: install rpms
+  ansible.builtin.dnf:
+    name: "{{ rpms }}"
+    state: latest
+
+- name: enable services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+    masked: no
+  loop: "{{ services }}"
+
+- name: create directory for vm templates
+  ansible.builtin.file:
+    path: /var/lib/libvirt/images/templates
+    state: directory
+    owner: root
+    group: root
+    mode: 0644
+    setype: virt_image_t
+
+- name: create users directory for vms
+  ansible.builtin.file:
+    path: "/{{ item }}"
+    state: directory
+    owner: qemu
+    group: qemu
+    mode: 0774
+    setype: virt_image_t
+  loop: "{{ users }}"
+
+- name: copy script to start vm (imagemode)
+  ansible.builtin.copy:
+    src: imagemode.sh
+    dest: /usr/local/bin/imagemode.sh
+    owner: root
+    group: root
+    mode: 0611
+    setype: bin_t
+
+- name: touch sudoers files
+  ansible.builtin.file:
+    path: "/etc/sudoers.d/{{ item }}"
+    state: touch
+    owner: root
+    group: root
+    mode: 0644
+    setype: etc_t
+  loop: "{{ users }}"
+
+- name: sudoers conf to start vm (imagemode)
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/imagemode
+    line: "{{ item }}"
+    state: present
+  loop:
+    - "/bin/bash /usr/local/bin/imagemode.sh"
+    
+- name: copy launcher to start vm (imageuser)
+  ansible.builtin.copy:
+    src: 'Launch VM.desktop'
+    dest: '/home/imagemode/.local/share/applications/Launch VM.desktop'
+    owner: imagemode
+    group: imagemode
+    mode: 0644
+    setype: user_home_t
+
+- name: copy launcher to start vm (podman)
+  ansible.builtin.copy:
+    src: 'Launch Podman.desktop'
+    dest: '/home/podman/.local/share/applications/Launch Podman.desktop'
+    owner: podman
+    group: podman
+    mode: 0644
+    setype: user_home_t
+
+- name: copy launcher to start vm (openscap)
+  ansible.builtin.copy:
+    src: 'Launch OpenScap.desktop'
+    dest: '/home/openscap/.local/share/applications/Launch OpenScap.desktop'
+    owner: openscap
+    group: openscap
+    mode: 0644
+    setype: user_home_t
+
+- name: ca cert
+  ansible.builtin.copy:
+    src: cacert.pem
+    dest: /etc/pki/ca-trust/source/anchors/
+    owner: root
+    group: root
+    mode: 0644
+    setype: cert_t
+
+- name: ca cert (imagemode)
+  ansible.builtin.copy:
+    src: cacert.pem
+    dest: /home/imagemode/
+    owner: imagemode
+    group: imagemode
+    mode: 0644
+    setype: cert_t
+
+- name: update-ca-trust
+  ansible.builtin.command:
+    cmd: /usr/bin/update-ca-trust
+
+- name: enable tuned profile for kvm host
+  ansible.builtin.command:
+    cmd: /usr/sbin/tuned-adm profile virtual-host

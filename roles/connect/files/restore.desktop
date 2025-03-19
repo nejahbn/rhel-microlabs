@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Test
+Comment=Restore environment
+Exec=gnome-terminal -e "bash -c '/usr/local/bin/restore.sh'"
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=Application;

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Launch image-mode-test VM
+Icon=/usr/share/icons/hicolor/64x64/apps/qemu.png
+Exec=sudo /bin/bash /usr/local/bin/imagemode.sh
+Terminal=false
+Categories=Development;
