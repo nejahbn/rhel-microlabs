@@ -1,2 +1,2 @@
-# rhel-microlabs-deployment-
-RHEL microworkshop Connect 2024
+# rhel-microlabs build
+RHEL microlabs deployment for Red Hat Summit Dubai 2025
