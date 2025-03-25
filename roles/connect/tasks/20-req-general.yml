@@ -89,10 +89,11 @@
   ansible.builtin.file:
     path: "/home/{{ item }}/.local/share/applications"
     state: directory
-    owner: {{ item }}
-    group:  {{ item }}
+    owner: "{{ item }}"
+    group: "{{ item }}"
     mode: 0744
     setype: user_home_t
+  loop: "{{ users }}"
 
 - name: copy launcher to start vm (imageuser)
   ansible.builtin.copy:
