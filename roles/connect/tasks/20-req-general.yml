@@ -84,7 +84,16 @@
     state: present
   loop:
     - "/bin/bash /usr/local/bin/imagemode.sh"
-    
+
+- name: create desktop applications directory
+  ansible.builtin.file:
+    path: "/home/{{ item }}/.local/share/applications"
+    state: directory
+    owner: {{ item }}
+    group:  {{ item }}
+    mode: 0744
+    setype: user_home_t
+
 - name: copy launcher to start vm (imageuser)
   ansible.builtin.copy:
     src: 'Launch VM.desktop'
