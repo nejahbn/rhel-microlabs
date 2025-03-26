@@ -1,7 +1,7 @@
 #/bin/bash
 
-export SEEDHOST="192.168.50.71"
-export SEEDUSER="admin"
+export SEEDHOST="localhost"
+export SEEDUSER="roo"
 export LABREPO=/home/admin/lab
 
 sudo dnf install -y curl openssh-clients
