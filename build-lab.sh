@@ -6,18 +6,17 @@ export LABREPO=/home/admin/lab
 
 sudo dnf install -y curl openssh-clients
 sudo dnf install -y ansible-core
+sudo ansible-galaxy collection install ansible.posix
 
 # create admin user locally
 echo "---"
 echo "creating 'admin' user locally"
+echo "and setting password for the admin user"
 echo "---"
 sudo adduser admin
 sudo usermod -aG wheel admin
 
 # set admin password
-echo "---"
-echo "setting password for the admin user"
-echo "---"
 sudo passwd admin
 
 #download  lab artifacts to  LABREPO
@@ -27,6 +26,11 @@ echo "Please provide the passwprd of the SEEDUSER on SEEDHOST"
 echo "---"
 sudo scp -r $SEEDUSER@$SEEDHOST:lab/ $LABREPO
 sudo chown -R admin:admin $LABREPO
+
+echo "---"
+echo "Uncompress Imagemode VM image template..."
+echo "---"
+
 sudo gunzip $LABREPO/image-mode.qcow2.gz
 
 echo "---"
