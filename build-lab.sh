@@ -13,8 +13,24 @@ sudo usermod -aG wheel admin
 # set admin password
 sudo passwd admin
 
-#download the imagemode VM template image to /tmp/image-mode.qcow2
-scp $SEEDUSER@$SEEDHOST:microlab/image-mode.qcow2.gz /tmp
-gunzip /tmp/image-mode.qcow2.gz
+#download the imagemode VM template image to /tmp/lab/image-mode.qcow2
+scp -r $SEEDUSER@$SEEDHOST:lab/ /tmp/
+gunzip /tmp/lab/image-mode.qcow2.gz
 
-ansible-playbook -kK -i hosts configure-laptops
+ansible-playbook -kK -i hosts configure-laptops.yml
+
+sudo qemu-img create -f qcow2 /imagemode/image-mode-test.qcow2 1G
+sudo qemu-img create -f qcow2 /imagemode/image-mode.qcow2 1G
+
+#---------------------------------------------------------
+#!!!!!!!!!!!!!! Overwrite default network !!!!!!!!!!!!!!!!
+#!!!!!!!!!!!!!! Current configuration will be LOST !!!!!!!
+sudo virsh net-undefine default
+sudo virsh create /tmp/lab/net-default.xml
+#----------------------------------------------------------
+sudo virsh create /tmp/lab/vm-imagemode.xml
+sudo virsh create /tmp/lab/vm-imagemodetest.xml
+
+
+
+
