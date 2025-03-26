@@ -76,7 +76,7 @@
     state: started
     enabled: true
     masked: no
-    
+
 
 - name: permit rdp service traffic
   ansible.posix.firewalld:
@@ -88,23 +88,23 @@
 #firewall-cmd --permanent --add-port={5555/tcp,5555/udp,6666/tcp,6666/udp}
 #firewall-cmd --reload
 
-- name: permit traffic in for nfs services
-  ansible.posix.firewalld:
-    service: "{{ item }}"
-    permanent: true
-    state: enabled
-  loop: 
-    - "nfs"
-    - "rpc-bind"
-    - "mountd"
+#- name: permit traffic in for nfs services
+#  ansible.posix.firewalld:
+#    service: "{{ item }}"
+#    permanent: true
+#    state: enabled
+#  loop: 
+#    - "nfs"
+#    - "rpc-bind"
+#    - "mountd"
 
-- name: permit traffic in for nfs ports
-  ansible.posix.firewalld:
-    ports: "{{ item }}"
-    permanent: true
-    state: enabled
-  loop: 
-    - "5555/tcp"
-    - "5555/udp"
-    - "6666/tcp"
-    - "6666/udp"
+#- name: permit traffic in for nfs ports
+#  ansible.posix.firewalld:
+#    ports: "{{ item }}"
+#    permanent: true
+#    state: enabled
+#  loop: 
+#    - "5555/tcp"
+#    - "5555/udp"
+#    - "6666/tcp"
+#    - "6666/udp"

@@ -55,6 +55,11 @@ sudo virsh create $LABREPO/vm-imagemode.xml
 sudo virsh create $LABREPO/vm-imagemodetest.xml
 
 
+sudo firewall-cmd --permanent --add-service={nfs,rpc-bind,mountd}
+sudo firewall-cmd --permanent --add-port={5555/tcp,5555/udp,6666/tcp,6666/udp}
+sudo firewall-cmd --reload
+
+
 
 
 
