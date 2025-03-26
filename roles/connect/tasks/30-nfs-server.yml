@@ -76,7 +76,13 @@
     state: started
     enabled: true
     masked: no
+    
 
+- name: permit rdp service traffic
+  ansible.posix.firewalld:
+    service: "rdp"
+    permanent: true
+    state: enabled
 
 #firewall-cmd --permanent --add-service={nfs,rpc-bind,mountd}
 #firewall-cmd --permanent --add-port={5555/tcp,5555/udp,6666/tcp,6666/udp}
