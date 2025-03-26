@@ -12,13 +12,19 @@
 case "${USER}" in
 
 	"imagemode")
-	/usr/bin/sudo /usr/bin/qemu-img convert -f qcow2 -O qcow2 -o lazy_refcounts=on /var/lib/libvirt/images/templates/image-mode.qcow2 /imagemode/image-mode.qcow2
-	/usr/bin/logger -p local4.info -t "User: "${USER} "Restoring image-mode vm - "$?
 	/usr/bin/sudo /usr/bin/qemu-img convert -f qcow2 -O qcow2 -o lazy_refcounts=on /var/lib/libvirt/images/templates/image-mode-test.qcow2 /imagemode/image-mode-test.qcow2
 	/usr/bin/logger -p local4.info -t "User: "${USER} "Restoring image-mode-test vm - "$?
+	/usr/bin/sudo /usr/bin/chmod 0664 /imagemode/image-mode-test.qcow2
+	#cleanup the build environment
+	/usr/bin/sudo /usr/bin/rm -r /imagemode/qcow2
+
+	/usr/bin/sudo /usr/bin/qemu-img convert -f qcow2 -O qcow2 -o lazy_refcounts=on /var/lib/libvirt/images/templates/image-mode.qcow2 /imagemode/image-mode.qcow2
+	/usr/bin/logger -p local4.info -t "User: "${USER} "Restoring image-mode vm - "$?
+	
 	/usr/bin/sudo /usr/bin/virsh start imagemode
 	/usr/bin/logger -p local4.info -t "User: "${USER}"Starting imagemode vm - "$?
-	/usr/bin/sudo /usr/bin/chmod 0664 /imagemode/image-mode-test.qcow2
+	
+
 	;;
 
 	"openscap")
