@@ -28,7 +28,7 @@ sudo scp -r $SEEDUSER@$SEEDHOST:lab/ $LABREPO
 sudo chown -R admin:admin $LABREPO
 
 echo "---"
-echo "Uncompress Imagemode VM image template..."
+echo "Uncompress imagemode VM disk template..."
 echo "---"
 
 sudo gunzip $LABREPO/image-mode.qcow2.gz
@@ -39,30 +39,15 @@ echo "Please provide the credentials of the local 'admin' user"
 echo "---"
 ansible-playbook -kK -i hosts configure-laptops.yml
 
-echo "---"
-echo "Provision lab virtual machines"
-echo "---"
-sudo qemu-img create -f qcow2 /imagemode/image-mode-test.qcow2 1G
-sudo qemu-img create -f qcow2 /imagemode/image-mode.qcow2 1G
-
-#---------------------------------------------------------
-#!!!!!!!!!!!!!! Overwrite default network !!!!!!!!!!!!!!!!
-#!!!!!!!!!!!!!! Current configuration will be LOST !!!!!!!
-sudo virsh net-destroy default
-sudo virsh net-undefine default
-sudo virsh net-create $LABREPO/net-default.xml
-#----------------------------------------------------------
-sudo virsh destroy imagemode
-sudo virsh undefine imagemode
-sudo virsh create $LABREPO/vm-imagemode.xml
-sudo virsh destroy image-mode-test
-sudo virsh undefine image-mode-test
-sudo virsh create $LABREPO/vm-imagemodetest.xml
-
 
 sudo firewall-cmd --permanent --add-service={nfs,rpc-bind,mountd}
 sudo firewall-cmd --permanent --add-port={5555/tcp,5555/udp,6666/tcp,6666/udp}
 sudo firewall-cmd --reload
+
+
+
+
+
 
 
 
