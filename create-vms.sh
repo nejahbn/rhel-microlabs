@@ -1,5 +1,7 @@
 #/bin/bash
 
+export LABREPO=/home/admin/lab
+
 echo "---"
 echo "Provision lab virtual machines"
 echo "---"
