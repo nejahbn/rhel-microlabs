@@ -14,7 +14,7 @@ sudo qemu-img create -f qcow2 /imagemode/image-mode.qcow2 1G
 #---------------------------------------------------------
 #!!!!!!!!!!!!!! Overwrite default network !!!!!!!!!!!!!!!!
 #!!!!!!!!!!!!!! Current configuration will be LOST !!!!!!!
-#sudo virsh net-destroy default
+sudo virsh net-destroy default
 sudo virsh net-undefine default
 sudo virsh net-create $LABREPO/net-default.xml
 #----------------------------------------------------------
