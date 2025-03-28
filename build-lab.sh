@@ -10,7 +10,7 @@ sudo dnf install -y firewalld
 
 sudo systemctl enable --now firewalld
 
-sudo ansible-galaxy collection install ansible.posix
+#sudo ansible-galaxy collection install ansible.posix
 
 # create admin user locally
 echo "---"
@@ -22,6 +22,9 @@ sudo usermod -aG wheel admin
 
 # set admin password
 sudo passwd admin
+
+sudo mkdir $LABREPO
+sudo chown -R admin:admin $LABREPO
 
 #download  lab artifacts to  LABREPO
 echo "---"
