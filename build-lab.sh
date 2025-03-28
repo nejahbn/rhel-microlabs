@@ -6,6 +6,10 @@ export LABREPO=/home/admin/lab
 
 sudo dnf install -y curl openssh-clients
 sudo dnf install -y ansible-core
+sudo dnf install -y firewalld
+
+sudo systemctl enable --now firewalld
+
 sudo ansible-galaxy collection install ansible.posix
 
 # create admin user locally
