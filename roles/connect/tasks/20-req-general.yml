@@ -64,9 +64,8 @@
    - "image-mode-test.qcow2"
 
 - name: check availability of the image disk template for imagemode VM
-  ansible.builtin.file:
+  ansible.builtin.stat:
     path: "{{ ansible_env.HOME }}/lab/image-mode.qcow2"
-    state: file
   register: imagemode_vm_template
 
 - name: Copy template image to libvirt directory
