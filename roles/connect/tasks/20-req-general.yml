@@ -51,13 +51,7 @@
 
 - name: Build blank image disk  template for imagemodetest VM
   ansible.builtin.command: qemu-img create -f qcow2 "{{ ansible_env.HOME }}/lab/image-mode-test.qcow2" 1G
-
-- name: check availability of the image disk template for imagemode VM
-  ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/lab/image-mode.qcow2"
-    state: file
     
-
 - name: Copy template image to libvirt directory
   ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/lab/{{ item }}"
@@ -68,8 +62,22 @@
     remote_src: yes
   loop:
    - "image-mode-test.qcow2"
-   - "image-mode.qcow2"
-    
+
+- name: check availability of the image disk template for imagemode VM
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/lab/image-mode.qcow2"
+    state: file
+  register: imagemode-vm-template
+
+- name: Copy template image to libvirt directory
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/lab/image-mode.qcow2"
+    dest: /var/lib/libvirt/images/templates
+    owner: qemu
+    group: qemu
+    mode: 0660
+    remote_src: yes
+  when: imagemode-vm-template.stat.exists
 
 - name: create users directory for vms
   ansible.builtin.file:
