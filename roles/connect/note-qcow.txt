@@ -1,0 +1,6 @@
+modprobe nbd max_part=63
+qemu-nbd -n -r -c /dev/nbd0 /imagemode/image-mode.qcow2
+wipefs /dev/nbd0
+fdisk -l /dev/nbd0
+
+qemu-nbd -d /dev/nbd0
