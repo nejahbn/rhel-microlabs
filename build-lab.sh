@@ -40,6 +40,10 @@ echo "---"
 
 sudo gunzip $LABREPO/image-mode.qcow2.gz
 
+sudo firewall-cmd --permanent --add-service={nfs,rpc-bind,mountd}
+sudo firewall-cmd --permanent --add-port={5555/tcp,5555/udp,6666/tcp,6666/udp}
+sudo firewall-cmd --reload
+
 echo "---"
 echo "Run ansible playbooks"
 echo "Please provide the credentials of the local 'admin' user"
@@ -47,9 +51,7 @@ echo "---"
 ansible-playbook -kK -i hosts configure-laptops.yml
 
 
-sudo firewall-cmd --permanent --add-service={nfs,rpc-bind,mountd}
-sudo firewall-cmd --permanent --add-port={5555/tcp,5555/udp,6666/tcp,6666/udp}
-sudo firewall-cmd --reload
+
 
 
 
