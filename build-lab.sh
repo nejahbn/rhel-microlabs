@@ -31,7 +31,7 @@ echo "---"
 echo "Downloading lab artifacts from the seed host"
 echo "Please provide the passwprd of the SEEDUSER on SEEDHOST"
 echo "---"
-sudo scp -r $SEEDUSER@$SEEDHOST:lab/ $LABREPO
+sudo scp -r $SEEDUSER@$SEEDHOST:lab/\* $LABREPO
 sudo chown -R admin:admin $LABREPO
 
 echo "---"

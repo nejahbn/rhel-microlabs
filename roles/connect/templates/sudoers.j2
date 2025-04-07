@@ -15,4 +15,5 @@
 {% if item == 'podman' %}
 {{ item }} ALL=(root) NOPASSWD: /usr/bin/qemu-img convert -f qcow2 -O qcow2 -o lazy_refcounts=on /var/lib/libvirt/images/templates/podman.qcow2 /var/lib/libvirt/images/podman.qcow2
 {{ item }} ALL=(root) NOPASSWD: /usr/bin/virsh start podman
+{{ item }} ALL=(root) NOPASSWD: /usr/bin/rm -r /imagemode/qcow2
 {% endif %}
