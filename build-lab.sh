@@ -1,6 +1,6 @@
 #/bin/bash
 
-export SEEDHOST="localhost"
+export SEEDHOST="10.202.100.60"
 export SEEDUSER="roo"
 export LABREPO=/home/admin/lab
 
